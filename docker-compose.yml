@@ -1,0 +1,11 @@
+services:
+  # Use: docker-compose run --rm nmap -sS -O -sV -F -v scanme.nmap.org
+  nmap:
+    image: parrotsec/nmap
+    container_name: nmap_scanner
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./work:/work
+    working_dir: /work
+    entrypoint: ["nmap"]

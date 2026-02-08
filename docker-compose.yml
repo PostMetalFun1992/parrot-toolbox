@@ -9,3 +9,22 @@ services:
       - ./work:/work
     working_dir: /work
     entrypoint: ["nmap"]
+
+  # Use: docker-compose run --rm msf
+  msf:
+    image: parrotsec/metasploit
+    container_name: metasploit_framework
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./work:/work
+      - msf_data:/root/.msf4
+      - msf-db:/var/lib/postgresql
+    working_dir: /work
+    entrypoint: ["/bin/bash"]
+    stdin_open: true
+    tty: true
+
+volumes:
+  msf_data:
+  msf-db:

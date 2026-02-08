@@ -1,6 +1,20 @@
 services:
-  # Use: docker-compose run --rm nmap -sS -O -sV -F -v scanme.nmap.org
+  # Use: docker compose run --rm nmap -sV scanme.nmap.org
   nmap:
+    image: parrotsec/nmap
+    container_name: nmap_scanner
+    network_mode: host
+    user: "${UID:-1000}:${GID:-1000}"
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    volumes:
+      - ./work:/work
+    working_dir: /work
+    entrypoint: ["nmap"]
+
+  # Use: docker compose run --rm nmap-root -sS -O -sV -F -v scanme.nmap.org
+  nmap-root:
     image: parrotsec/nmap
     container_name: nmap_scanner
     network_mode: host
@@ -10,8 +24,8 @@ services:
     working_dir: /work
     entrypoint: ["nmap"]
 
-  # Use: docker-compose run --rm msf
-  msf:
+  # Use: docker compose run --rm msf-root
+  msf-root:
     image: parrotsec/metasploit
     container_name: metasploit_framework
     network_mode: host

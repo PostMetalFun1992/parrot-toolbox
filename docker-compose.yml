@@ -1,44 +1,20 @@
 services:
-  # Use: docker compose run --rm nmap -sV scanme.nmap.org
+  # Use: docker compose run --rm nmap
+  # Inside container: nmap --privileged -sS -O -sV -F -v -oA scanme.log scanme.nmap.org
   nmap:
-    image: parrotsec/nmap
-    container_name: nmap_scanner
+    build:
+      context: ./docker/nmap
+      args:
+        USERNAME: hacker
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    image: nmap-user:v1
+    container_name: nmap-user
+    hostname: parrot-toolbox
     network_mode: host
-    user: "${UID:-1000}:${GID:-1000}"
     cap_add:
       - NET_RAW
-      - NET_ADMIN
     volumes:
       - ./work:/work
     working_dir: /work
-    entrypoint: ["nmap"]
-
-  # Use: docker compose run --rm nmap-root -sS -O -sV -F -v scanme.nmap.org
-  nmap-root:
-    image: parrotsec/nmap
-    container_name: nmap_scanner
-    network_mode: host
-    privileged: true
-    volumes:
-      - ./work:/work
-    working_dir: /work
-    entrypoint: ["nmap"]
-
-  # Use: docker compose run --rm msf-root
-  msf-root:
-    image: parrotsec/metasploit
-    container_name: metasploit_framework
-    network_mode: host
-    privileged: true
-    volumes:
-      - ./work:/work
-      - msf_data:/root/.msf4
-      - msf-db:/var/lib/postgresql
-    working_dir: /work
-    entrypoint: ["/bin/bash"]
-    stdin_open: true
-    tty: true
-
-volumes:
-  msf_data:
-  msf-db:
+    entrypoint: ["bash"]

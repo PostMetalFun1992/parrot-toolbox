@@ -18,3 +18,20 @@ services:
       - ./work:/work
     working_dir: /work
     entrypoint: ["bash"]
+
+  # Use: docker compose run --rm parrot
+  parrot:
+    build:
+      context: ./docker/core
+      args:
+        USERNAME: hacker
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    image: parrot-user
+    container_name: parrot-user
+    hostname: parrot-toolbox
+    network_mode: host
+    volumes:
+      - ./work:/work
+    working_dir: /work
+    entrypoint: ["bash"]

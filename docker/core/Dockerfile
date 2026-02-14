@@ -6,12 +6,16 @@ ARG GROUP_ID=1000
 
 RUN apt-get update && apt-get install -y \
     ffuf \
+    gobuster \
     unzip \
     httpie \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${GROUP_ID} ${USERNAME} && \
     useradd -m -u ${USER_ID} -g ${GROUP_ID} -s /bin/bash ${USERNAME}
+
+ENV COLORTERM=truecolor
+ENV TERM=xterm-256color
 
 WORKDIR /work
 

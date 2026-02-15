@@ -4,6 +4,8 @@ ARG USERNAME=hacker
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+
 RUN apt-get update && apt-get install -y \
     ffuf \
     gobuster \
